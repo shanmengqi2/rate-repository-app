@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": ["types/*"]
+    },
+    "checkJs": false,
+    "jsx": "react-native"
+  },
+  "include": ["**/*.js", "**/*.jsx", "types/**/*.d.ts", "eslint.config.mjs"],
+  "exclude": ["node_modules"]
+}
