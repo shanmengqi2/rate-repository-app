@@ -1,12 +1,18 @@
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Main from "./src/components/Main";
-import RepositoryList from "./src/components/RepositoryList";
+import { NativeRouter } from "react-router-native";
 
 const App = () => {
   return (
     <SafeAreaProvider>
-      <Main />
-      <RepositoryList />
+      <NativeRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <Main />
+      </NativeRouter>
     </SafeAreaProvider>
   );
 };
