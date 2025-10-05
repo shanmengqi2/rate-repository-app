@@ -33,3 +33,4 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+anaconda_projects/db/project_filebrowser.db

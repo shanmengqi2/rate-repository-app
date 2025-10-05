@@ -74,6 +74,8 @@ const styles = StyleSheet.create({
   nameDescription: {
     flexDirection: "column",
     justifyContent: "flex-end",
+    // paddingRight: 25,
+    width: "85%"
   },
   name: {
     fontWeight: "bold",
