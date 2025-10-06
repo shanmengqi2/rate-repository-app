@@ -1,9 +1,11 @@
 import Text from "./Text";
-import { TextInput, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useFormik } from "formik";
 import { StyleSheet } from "react-native";
 import * as yup from "yup";
 import TextInputCustomize from "./TextInputCustomize";
+import useSignIn from "../hooks/useSignIn";
+import { useNavigate } from "react-router-native";
 
 const initialValues = {
   username: "",
@@ -15,7 +17,19 @@ const validationSchema = yup.object({
   password: yup.string().required("Password is required"),
 });
 
-const SignIn = ({ onSubmit }) => {
+const SignIn = () => {
+  const navigate = useNavigate();
+  const [signIn] = useSignIn();
+  const onSubmit = async (values) => {
+    console.log("valuesssssssss", values);
+    const { username, password } = values;
+    try {
+      await signIn({ username, password });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const formik = useFormik({
     initialValues,
     onSubmit,
@@ -42,13 +56,13 @@ const SignIn = ({ onSubmit }) => {
           {formik.errors.username}
         </Text>
       )}
-      <TextInput
-        style={styles.textInput}
+      <TextInputCustomize
         placeholder="Password"
         value={formik.values.password}
         onChangeText={formik.handleChange("password")}
         onBlur={formik.handleBlur("password")}
         secureTextEntry
+        error={formik.touched.password && formik.errors.password}
       />
       {formik.touched.password && formik.errors.password && (
         <Text color="error" style={{ paddingBottom: 10 }}>

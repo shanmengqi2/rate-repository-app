@@ -3,25 +3,24 @@ import { TouchableOpacity } from "react-native";
 
 import { Link } from "react-router-native";
 import { ScrollView } from "react-native";
+import { useQuery } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
+import useAuthStorage from "../hooks/useAuthStorage";
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "flex-start",
-//     paddingTop: 22,
-//     paddingLeft: 10,
-//     paddingRight: 10,
-//     paddingBottom: 22,
-//     gap: 20,
-//     backgroundColor: "#24292e",
-//     borderBottomWidth: StyleSheet.hairlineWidth,
-//     borderBottomColor: "#ccc",
-//     opacity: 0.9,
-//   },
-// });
+import { ME } from "../graphql/queries";
 
 const AppBar = () => {
+  const { data } = useQuery(ME);
+  console.log("data in AppBar", data);
+  const apolloClient = useApolloClient();
+  const authStorage = useAuthStorage();
+
+  const handleSignOut = () => {
+    // Implement sign out logic here
+    authStorage.removeAccessToken();
+    apolloClient.resetStore();
+  };
+
   return (
     <ScrollView
       horizontal
@@ -49,23 +48,31 @@ const AppBar = () => {
           </Text>
         </Link>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {}}>
-        <Link to="/signin">
-          <Text color="white" fontWeight="bold">
-            SignIn
-          </Text>
-        </Link>
-      </TouchableOpacity>
+      {!data.me && (
+        <TouchableOpacity onPress={() => {}}>
+          <Link to="/signin">
+            <Text color="white" fontWeight="bold">
+              SignIn
+            </Text>
+          </Link>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity onPress={() => {}}>
         <Text color="white" fontWeight="bold">
           Create a Review
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {}}>
-        <Text color="white" fontWeight="bold">
-          Sign Out
-        </Text>
-      </TouchableOpacity>
+      {data.me && (
+        <TouchableOpacity
+          onPress={() => {
+            handleSignOut();
+          }}
+        >
+          <Text color="white" fontWeight="bold">
+            Sign Out
+          </Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 };
