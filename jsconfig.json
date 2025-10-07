@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "*": ["types/*"]
-    },
     "checkJs": false,
     "jsx": "react-native"
   },

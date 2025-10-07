@@ -11,7 +11,7 @@ import { ME } from "../graphql/queries";
 
 const AppBar = () => {
   const { data } = useQuery(ME);
-  console.log("data in AppBar", data);
+  // console.log("data in AppBar", data);
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
 
