@@ -48,7 +48,7 @@ const AppBar = () => {
           </Text>
         </Link>
       </TouchableOpacity>
-      {!data.me && (
+      {!data && (
         <TouchableOpacity onPress={() => {}}>
           <Link to="/signin">
             <Text color="white" fontWeight="bold">
@@ -62,7 +62,7 @@ const AppBar = () => {
           Create a Review
         </Text>
       </TouchableOpacity>
-      {data.me && (
+      {data && (
         <TouchableOpacity
           onPress={() => {
             handleSignOut();
