@@ -5,72 +5,74 @@ import theme from "../theme";
 import { TouchableOpacity } from "react-native";
 import * as Linking from "expo-linking";
 
-const RepositoryItem = ({ item, hasGithub = false }) => {
-
+const RepositoryItem = ({ repository }) => {
   const openInGithub = (url) => {
     Linking.openURL(url);
   };
 
   // If no item data is available, return null
-  if (!item) {
+  if (!repository) {
+    console.log("No item data available, returning null");
     return null;
   }
 
   return (
     <View testID="repositoryItem" style={theme.repositoryItem}>
       <View style={styles.avatarName}>
-        <Image source={{ uri: item.ownerAvatarUrl }} style={styles.avatar} />
+        <Image
+          source={{ uri: repository.ownerAvatarUrl }}
+          style={styles.avatar}
+        />
         <View style={styles.nameDescription}>
-          <Text style={styles.name}>{item.fullName}</Text>
-          <Text style={styles.description}>{item.description}</Text>
-          <Text style={styles.language}>{item.language}</Text>
+          <Text style={styles.name}>{repository.fullName}</Text>
+          <Text style={styles.description}>{repository.description}</Text>
+          <Text style={styles.language}>{repository.language}</Text>
         </View>
       </View>
 
       <View className="statistics" style={styles.statistics}>
         <View className="statItemGroup" style={styles.statItemGroup}>
           <Text fontWeight="bold">
-            {item.stargazersCount > 1000
-              ? (item.stargazersCount / 1000).toFixed(1) + "k"
-              : item.stargazersCount}
+            {repository.stargazersCount > 1000
+              ? (repository.stargazersCount / 1000).toFixed(1) + "k"
+              : repository.stargazersCount}
           </Text>
           <Text color="textSecondary">Stars</Text>
         </View>
         <View className="statItemGroup" style={styles.statItemGroup}>
           <Text fontWeight="bold">
-            {item.forksCount > 1000
-              ? (item.forksCount / 1000).toFixed(1) + "k"
-              : item.forksCount}
+            {repository.forksCount > 1000
+              ? (repository.forksCount / 1000).toFixed(1) + "k"
+              : repository.forksCount}
           </Text>
           <Text color="textSecondary">Forks</Text>
         </View>
         <View className="statItemGroup" style={styles.statItemGroup}>
           <Text fontWeight="bold">
-            {item.reviewCount > 1000
-              ? (item.reviewCount / 1000).toFixed(1) + "k"
-              : item.reviewCount}
+            {repository.reviewCount > 1000
+              ? (repository.reviewCount / 1000).toFixed(1) + "k"
+              : repository.reviewCount}
           </Text>
           <Text color="textSecondary">Reviews</Text>
         </View>
         <View className="statItemGroup" style={styles.statItemGroup}>
-          <Text fontWeight="bold">{item.ratingAverage}</Text>
+          <Text fontWeight="bold">{repository.ratingAverage}</Text>
           <Text color="textSecondary">Rating</Text>
         </View>
       </View>
-      {hasGithub && (
-        <View style={styles.openInGithub}>
-          <TouchableOpacity onPress={() => openInGithub(item.url)}>
-            <Text
-              color="white"
-              fontWeight="bold"
-              fontSize="subheading"
-              style={{ textAlign: "center" }}
-            >
-              Open in Github
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+
+      <View style={styles.openInGithub}>
+        <TouchableOpacity onPress={() => openInGithub(repository.url)}>
+          <Text
+            color="white"
+            fontWeight="bold"
+            fontSize="subheading"
+            style={{ textAlign: "center" }}
+          >
+            Open in Github
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

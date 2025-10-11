@@ -4,86 +4,42 @@ import { useFormik } from "formik";
 import { StyleSheet } from "react-native";
 import * as yup from "yup";
 import TextInputCustomize from "./TextInputCustomize";
-import useSignIn from "../hooks/useSignIn";
-import { useNavigate } from "react-router-native";
+import useSignUp from "src/hooks/useSignUp";
 
 const initialValues = {
   username: "",
   password: "",
+  passwordConfirm: "",
 };
 
 const validationSchema = yup.object({
   username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
+  passwordConfirm: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Password confirmation is required"),
 });
 
-export const SignInContainer = ({ onSubmit }) => {
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-  });
-  return (
-    <View style={styles.container}>
-      {/* <TextInput
-        style={styles.textInput}
-        placeholder="Username"
-        value={formik.values.username}
-        onChangeText={formik.handleChange("username")}
-        onBlur={formik.handleBlur("username")}
-      />*/}
-      <TextInputCustomize
-        placeholder="Username"
-        value={formik.values.username}
-        onChangeText={formik.handleChange("username")}
-        onBlur={formik.handleBlur("username")}
-        error={formik.touched.username && formik.errors.username}
-      />
-      {formik.touched.username && formik.errors.username && (
-        <Text color="error" style={{ paddingBottom: 10 }}>
-          {formik.errors.username}
-        </Text>
-      )}
-      <TextInputCustomize
-        placeholder="Password"
-        value={formik.values.password}
-        onChangeText={formik.handleChange("password")}
-        onBlur={formik.handleBlur("password")}
-        secureTextEntry
-        error={formik.touched.password && formik.errors.password}
-      />
-      {formik.touched.password && formik.errors.password && (
-        <Text color="error" style={{ paddingBottom: 10 }}>
-          {formik.errors.password}
-        </Text>
-      )}
-      <Pressable style={styles.button} onPress={formik.handleSubmit}>
-        <Text color="white" fontWeight="bold">
-          Sign In
-        </Text>
-      </Pressable>
-    </View>
-  );
-};
+const SignUp = () => {
+  const [signUp] = useSignUp();
 
-const SignIn = () => {
-  const navigate = useNavigate();
-  const [signIn] = useSignIn();
   const onSubmit = async (values) => {
     // console.log("valuesssssssss", values);
     const { username, password } = values;
     try {
-      await signIn({ username, password });
-      navigate("/");
+      await signUp({ username, password });
     } catch (error) {
       console.log(error);
     }
   };
+
   const formik = useFormik({
     initialValues,
     onSubmit,
     validationSchema,
   });
+
   return (
     <View style={styles.container}>
       <TextInputCustomize
@@ -111,28 +67,27 @@ const SignIn = () => {
           {formik.errors.password}
         </Text>
       )}
+      <TextInputCustomize
+        placeholder="Password"
+        value={formik.values.passwordConfirm}
+        onChangeText={formik.handleChange("passwordConfirm")}
+        onBlur={formik.handleBlur("passwordConfirm")}
+        secureTextEntry
+        error={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
+      />
+      {formik.touched.passwordConfirm && formik.errors.passwordConfirm && (
+        <Text color="error" style={{ paddingBottom: 10 }}>
+          {formik.errors.passwordConfirm}
+        </Text>
+      )}
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
         <Text color="white" fontWeight="bold">
-          Sign In
+          Sign Up
         </Text>
       </Pressable>
     </View>
   );
 };
-
-// const SignInForm = () => {
-//   const onSubmit = (values) => {
-//     const username = values.username;
-//     const password = values.password;
-
-//     if (username && password) {
-//       console.log("Valid input");
-//     } else {
-//       console.log("Invalid input");
-//     }
-//   };
-//   return <SignIn onSubmit={onSubmit} />;
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -166,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default SignUp;

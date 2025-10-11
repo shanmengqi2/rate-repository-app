@@ -7,7 +7,10 @@ import AppBar from "./AppBar";
 import RepositoryList from "./RepositoryList";
 import { Route, Routes, Navigate } from "react-router-native";
 import SignIn from "./SignIn";
-import RepositoryItem from "./RepositoryItem";
+// import RepositoryItem from "./RepositoryItem";
+import SingleRepository from "./SingleRepository";
+import ReviewForm from "./ReviewForm";
+import SignUp from "./SignUp";
 
 const styles = StyleSheet.create({
   container: {
@@ -31,11 +34,14 @@ const Main = () => {
       </View>
       <Routes>
         <Route path="/" element={<RepositoryList />} />
-        <Route
+        {/* <Route
           path="/repository/:id"
           element={<RepositoryItem hasGithub={true} />}
-        />
+        />*/}
+        <Route path="/repository/:id" element={<SingleRepository />} />
+        <Route path="/reviewForm" element={<ReviewForm />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       {/* <View style={styles.container}>

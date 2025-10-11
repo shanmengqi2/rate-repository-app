@@ -3,10 +3,17 @@ import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
 import { Link } from "react-router-native";
 import { TouchableOpacity } from "react-native";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
 });
 
@@ -26,7 +33,25 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const { repositories, loading, error } = useRepositories();
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading repositories...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    console.error("RepositoryList error:", error);
+    return (
+      <View style={styles.container}>
+        <Text>Error loading repositories: {error.message}</Text>
+        <Text>Please check if the GraphQL server is running at {process.env.APOLLO_URI || 'the configured URL'}</Text>
+      </View>
+    );
+  }
 
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
